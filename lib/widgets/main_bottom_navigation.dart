@@ -1,4 +1,4 @@
-import 'package:architecture/notifiers/BottomNavigationNotifier.dart';
+import 'package:architecture/notifiers/BottomNavigationNotifierImpl.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,7 +11,7 @@ class MainBottomNavigation extends StatefulWidget {
 class _MainBottomNavigationState extends State<MainBottomNavigation> {
   @override
   Widget build(BuildContext context) {
-    int selectedIndex = context.watch<BottomNavNotifier>().selectedPage;
+    int selectedIndex = context.watch<BottomNavNotifierImpl>().selectedPage;
 
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
@@ -50,7 +50,7 @@ class _MainBottomNavigationState extends State<MainBottomNavigation> {
       unselectedFontSize: 12,
       unselectedItemColor: Colors.white,
       onTap: (value) {
-        context.read<BottomNavNotifier>().setSelectedItem(value);
+        context.read<BottomNavNotifierImpl>().setSelectedItem(value);
       },
     );
   }

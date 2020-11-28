@@ -1,4 +1,4 @@
-import 'package:architecture/notifiers/BottomNavigationNotifier.dart';
+import 'package:architecture/notifiers/BottomNavigationNotifierImpl.dart';
 import 'package:architecture/pages/page_first.dart';
 import 'package:architecture/pages/page_second.dart';
 import 'package:architecture/widgets/main_bottom_navigation.dart';
@@ -20,9 +20,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: ChangeNotifierProvider(
-          create: (context) => BottomNavNotifier(),
-          child: HomePage()),
+      home: MultiProvider(providers: [
+        ChangeNotifierProvider<BottomNavNotifierImpl>(
+            create: (_) => BottomNavNotifierImpl()),
+      ], child: HomePage()),
     );
   }
 }
@@ -32,16 +33,15 @@ class HomePage extends StatefulWidget {
   State<StatefulWidget> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage>{
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    BottomNavNotifier notifier = context.watch<BottomNavNotifier>();
+    BottomNavNotifierImpl notifier = context.watch<BottomNavNotifierImpl>();
 
     return Container(
       child: WillPopScope(
-        onWillPop: () async => !await notifier
-            .keys[notifier.selectedPage].currentState
-            .maybePop(),
+        onWillPop: () async =>
+            !await notifier.keys[notifier.selectedPage].currentState.maybePop(),
         child: Scaffold(
           body: IndexedStack(index: notifier.selectedPage, children: [
             Navigator(
